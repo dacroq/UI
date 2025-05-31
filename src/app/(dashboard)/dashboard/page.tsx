@@ -851,19 +851,17 @@ export default function Dashboard() {
                       href="/ldpc"
                       className="bg-card text-card-foreground border border-border rounded-2xl p-6 flex flex-col hover:bg-accent transition-colors group card-elevated-hover"
                     >
-                      <div className="mb-4">
-                        <div className="h-10 w-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                          <RiTestTubeLine className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                        </div>
+                      <div className="mb-0">
+
                       </div>
                       <h3 className="text-lg font-medium text-foreground mb-2">
                         LDPC Error Correction
                       </h3>
-                      <p className="text-sm text-muted-foreground mb-4 flex-1">
+                      <p className="text-sm text-muted-foreground mb-5">
                         Test message error correction with analog and digital hardware acceleration
                       </p>
                       <div className="text-blue-600 dark:text-blue-400 text-sm font-medium flex items-center group-hover:translate-x-1 transition-transform">
-                        Start Testing
+                        Create a Job
                         <RiArrowRightLine className="ml-1 h-4 w-4" />
                       </div>
                     </Link>
@@ -873,19 +871,15 @@ export default function Dashboard() {
                       href="/sat"
                       className="bg-card text-card-foreground border border-border rounded-2xl p-6 flex flex-col hover:bg-accent transition-colors group card-elevated-hover"
                     >
-                      <div className="mb-4">
-                        <div className="h-10 w-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
-                          <RiBarChartLine className="h-5 w-5 text-green-600 dark:text-green-400" />
-                        </div>
-                      </div>
+
                       <h3 className="text-lg font-medium text-foreground mb-2">
                         SAT Solving
                       </h3>
-                      <p className="text-sm text-muted-foreground mb-4 flex-1">
+                      <p className="text-sm text-muted-foreground mb-4 ">
                         Hardware-accelerated Boolean satisfiability solving
                       </p>
                       <div className="text-blue-600 dark:text-blue-400 text-sm font-medium flex items-center group-hover:translate-x-1 transition-transform">
-                        Start Testing
+                        Create a Job
                         <RiArrowRightLine className="ml-1 h-4 w-4" />
                       </div>
                     </Link>
@@ -895,19 +889,14 @@ export default function Dashboard() {
                       href="/settings"
                       className="bg-card text-card-foreground border border-border rounded-2xl p-6 flex flex-col hover:bg-accent transition-colors group card-elevated-hover"
                     >
-                      <div className="mb-4">
-                        <div className="h-10 w-10 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
-                          <RiFileListLine className="h-5 w-5 text-purple-600 dark:text-purple-400" />
-                        </div>
-                      </div>
                       <h3 className="text-lg font-medium text-foreground mb-2">
-                        API Access
+                        Documentation
                       </h3>
                       <p className="text-sm text-muted-foreground mb-4 flex-1">
-                        Get API credentials and documentation for programmatic access
+                      Project abstract, architecture, commands and operations.
                       </p>
                       <div className="text-blue-600 dark:text-blue-400 text-sm font-medium flex items-center group-hover:translate-x-1 transition-transform">
-                        View Credentials
+                        Take me to the docs
                         <RiArrowRightLine className="ml-1 h-4 w-4" />
                       </div>
                     </Link>
@@ -1105,22 +1094,6 @@ export default function Dashboard() {
                               ? "Try adjusting your search or filters"
                               : "Start running tests to see results here"}
                           </p>
-                          {!searchQuery && selectedCategory === "all" && (
-                            <div className="flex justify-center gap-3">
-                              <Link href="/ldpc">
-                                <Button>
-                                  <RiAddLine className="mr-2 h-4 w-4" />
-                                  Run LDPC Test
-                                </Button>
-                              </Link>
-                              <Link href="/sat">
-                                <Button variant="outline">
-                                  <RiAddLine className="mr-2 h-4 w-4" />
-                                  Run SAT Test
-                                </Button>
-                              </Link>
-                            </div>
-                          )}
                         </div>
                       ) : (
                         <>

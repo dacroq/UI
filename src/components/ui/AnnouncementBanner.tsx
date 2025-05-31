@@ -25,32 +25,6 @@ export default function AnnouncementBanner() {
       setDismissed(JSON.parse(dismissedIds));
     }
 
-    // Fetch active announcements
-    const fetchAnnouncements = async () => {
-      try {
-        const announcements = await auth.getAnnouncements();
-        
-        if (announcements.length > 0) {
-          // Get the most recent announcement
-          announcements.sort((a, b) => {
-            const dateA = new Date(a.created_at);
-            const dateB = new Date(b.created_at);
-            return dateB.getTime() - dateA.getTime();
-          });
-
-          setAnnouncement(announcements[0]);
-        }
-      } catch (error) {
-        console.error("Error fetching announcements:", error);
-      }
-    };
-
-    fetchAnnouncements();
-
-    // Poll for new announcements every 30 seconds
-    const interval = setInterval(fetchAnnouncements, 30000);
-
-    return () => clearInterval(interval);
   }, []);
 
   const dismissAnnouncement = (announcementId: string) => {

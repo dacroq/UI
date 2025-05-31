@@ -91,19 +91,19 @@ export default function LDPCTestingInterface() {
     const [apiHealth, setApiHealth] = useState<any>(null);
     const [loading, setLoading] = useState(false);
     const [initialLoading, setInitialLoading] = useState(true);
-    
+
     // Test configuration state
     const [testName, setTestName] = useState('');
     const [customMessage, setCustomMessage] = useState('');
     const [selectedPreWritten, setSelectedPreWritten] = useState('');
-    
+
     // Dynamic parameters state
     const [activeParameters, setActiveParameters] = useState<Record<string, any>>({
         algorithm_type: PARAMETER_OPTIONS.algorithm_type.default,
         test_mode: PARAMETER_OPTIONS.test_mode.default,
         noise_level: PARAMETER_OPTIONS.noise_level.default
     });
-    
+
     const [showParameterSelector, setShowParameterSelector] = useState(false);
 
     // Auto-generate test name
@@ -111,7 +111,7 @@ export default function LDPCTestingInterface() {
         if (typeof window === 'undefined') {
             return 'ldpc_' + Date.now().toString(36).slice(-6);
         }
-        
+
         try {
             const user = JSON.parse(localStorage.getItem("user") || "{}");
             const email = user.email || "user@example.com";
@@ -179,7 +179,7 @@ export default function LDPCTestingInterface() {
         try {
             setLoading(true);
             const finalTestName = testName.trim() || generateTestName();
-            
+
             const response = await fetch('/api/proxy/ldpc/jobs', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -187,26 +187,26 @@ export default function LDPCTestingInterface() {
                     name: finalTestName,
                     algorithm_type: activeParameters.algorithm_type,
                     test_mode: activeParameters.test_mode,
-                    message_content: activeParameters.test_mode === 'custom_message' ? customMessage : 
-                                   activeParameters.test_mode === 'pre_written' ? preWrittenMessages.find(m => m.value === selectedPreWritten)?.content : undefined,
+                    message_content: activeParameters.test_mode === 'custom_message' ? customMessage :
+                        activeParameters.test_mode === 'pre_written' ? preWrittenMessages.find(m => m.value === selectedPreWritten)?.content : undefined,
                     noise_level: activeParameters.noise_level,
                     ...activeParameters
                 })
             });
 
             const result = await response.json();
-            
+
             if (response.ok) {
                 toast({
                     variant: 'success',
                     description: `Test "${finalTestName}" started successfully!`
                 });
-                
+
                 // Reset form
                 setTestName('');
                 setCustomMessage('');
                 setSelectedPreWritten('');
-                
+
                 // Redirect to dashboard
                 setTimeout(() => {
                     router.push('/dashboard');
@@ -230,7 +230,7 @@ export default function LDPCTestingInterface() {
 
     const renderParameterControl = (paramKey: string, config: any) => {
         const value = activeParameters[paramKey];
-        
+
         switch (config.type) {
             case 'select':
                 return (
@@ -244,7 +244,7 @@ export default function LDPCTestingInterface() {
                                     <div className="flex flex-col items-start">
                                         <span className="font-medium">{option.label}</span>
                                         {option.description && (
-                                            <span className="text-xs text-gray-500 dark:text-gray-400">{option.description}</span>
+                                            <span className="text-xs text-muted-foreground">{option.description}</span>
                                         )}
                                     </div>
                                 </SelectItem>
@@ -252,12 +252,12 @@ export default function LDPCTestingInterface() {
                         </SelectContent>
                     </Select>
                 );
-            
+
             case 'slider':
                 return (
                     <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                            <span className="text-sm text-gray-600 dark:text-gray-400">{value}{config.unit}</span>
+                            <span className="text-sm text-muted-foreground">{value}{config.unit}</span>
                         </div>
                         <Slider
                             value={[value]}
@@ -269,7 +269,7 @@ export default function LDPCTestingInterface() {
                         />
                     </div>
                 );
-            
+
             case 'number':
                 return (
                     <Input
@@ -281,7 +281,7 @@ export default function LDPCTestingInterface() {
                         className="w-full"
                     />
                 );
-            
+
             default:
                 return null;
         }
@@ -291,8 +291,8 @@ export default function LDPCTestingInterface() {
         return (
             <div className="flex items-center justify-center min-h-[60vh]">
                 <div className="flex items-center space-x-2">
-                    <RiLoader4Line className="h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
-                    <span className="text-lg text-gray-600 dark:text-gray-400">Loading interface...</span>
+                    <RiLoader4Line className="h-6 w-6 animate-spin text-muted-foreground" />
+                    <span className="text-lg text-muted-foreground">Loading interface...</span>
                 </div>
             </div>
         );
@@ -300,23 +300,23 @@ export default function LDPCTestingInterface() {
 
     return (
         <div className="page-container">
-            <div className="max-w-4xl mx-auto space-y-8">
+            <div className="max-w-4xl mx-auto space-y-8 py-8 px-4">
                 {/* Header */}
                 <div className="text-center page-header">
-                    <div className="inline-flex items-center justify-center p-3 bg-blue-100 dark:bg-blue-900/30 rounded-2xl mb-6">
-                        <Sparkles className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                    <div className="inline-flex items-center justify-center p-3 bg-muted rounded-2xl mb-6">
+                        <Sparkles className="h-8 w-8 text-muted-foreground" />
                     </div>
-                    <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                    <h1 className="text-4xl font-bold text-foreground mb-4">
                         LDPC Error Correction
                     </h1>
-                    <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                         Test message error correction with cutting-edge analog and digital hardware acceleration
                     </p>
                 </div>
 
                 {/* Main Configuration Card */}
                 <Card className="card-elevated">
-                    <CardHeader className="border-b border-gray-200 dark:border-gray-700">
+                    <CardHeader className="border-b border-border">
                         <CardTitle className="text-xl flex items-center gap-2">
                             <RiSettings3Line className="h-5 w-5" />
                             Test Configuration
@@ -335,7 +335,6 @@ export default function LDPCTestingInterface() {
                                 onChange={(e) => setTestName(e.target.value)}
                                 className="h-11"
                             />
-                            <p className="form-description">Leave empty to auto-generate</p>
                         </div>
 
                         {/* Active Parameters */}
@@ -361,7 +360,7 @@ export default function LDPCTestingInterface() {
                                         exit={{ opacity: 0, height: 0 }}
                                         className="overflow-hidden mb-4"
                                     >
-                                        <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4">
+                                        <div className="border-2 border-dashed border-border rounded-lg p-4">
                                             <div className="grid grid-cols-2 gap-2">
                                                 {Object.entries(PARAMETER_OPTIONS).map(([key, config]) => (
                                                     !activeParameters[key] && (
@@ -394,17 +393,17 @@ export default function LDPCTestingInterface() {
                                             key={key}
                                             initial={{ opacity: 0, x: -20 }}
                                             animate={{ opacity: 1, x: 0 }}
-                                            className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 space-y-3"
+                                            className="bg-muted/50 rounded-lg p-4 space-y-3"
                                         >
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-center gap-3">
-                                                    <div className="p-2 bg-white dark:bg-gray-700 rounded-lg">
+                                                    <div className="p-2 bg-background rounded-lg">
                                                         {config.icon}
                                                     </div>
                                                     <div>
-                                                        <h4 className="font-medium text-gray-900 dark:text-white">{config.label}</h4>
+                                                        <h4 className="font-medium text-foreground">{config.label}</h4>
                                                         {'description' in config && config.description && (
-                                                            <p className="text-xs text-gray-500 dark:text-gray-400">{config.description}</p>
+                                                            <p className="text-xs text-muted-foreground">{config.description}</p>
                                                         )}
                                                     </div>
                                                 </div>
@@ -463,15 +462,15 @@ export default function LDPCTestingInterface() {
                                             <SelectItem key={msg.value} value={msg.value}>
                                                 <div className="flex flex-col items-start">
                                                     <span className="font-medium">{msg.label}</span>
-                                                    <span className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">{msg.content}</span>
+                                                    <span className="text-xs text-muted-foreground line-clamp-1">{msg.content}</span>
                                                 </div>
                                             </SelectItem>
                                         ))}
                                     </SelectContent>
                                 </Select>
                                 {selectedPreWritten && (
-                                    <div className="mt-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                                        <p className="text-sm text-gray-600 dark:text-gray-400">
+                                    <div className="mt-2 p-3 bg-muted/50 rounded-lg">
+                                        <p className="text-sm text-muted-foreground">
                                             {preWrittenMessages.find(m => m.value === selectedPreWritten)?.content}
                                         </p>
                                     </div>
@@ -484,9 +483,9 @@ export default function LDPCTestingInterface() {
                             <Button
                                 size="lg"
                                 onClick={runTest}
-                                disabled={loading || (activeParameters.test_mode === 'custom_message' && !customMessage.trim()) || 
-                                         (activeParameters.test_mode === 'pre_written' && !selectedPreWritten)}
-                                className="btn-apple-primary gap-2 px-8 h-12"
+                                disabled={loading || (activeParameters.test_mode === 'custom_message' && !customMessage.trim()) ||
+                                    (activeParameters.test_mode === 'pre_written' && !selectedPreWritten)}
+                                className="gap-2 px-8 h-12"
                             >
                                 {loading ? (
                                     <>
@@ -509,13 +508,13 @@ export default function LDPCTestingInterface() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <Card className="card-elevated-hover">
                         <CardHeader>
-                            <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg w-fit mb-2">
-                                <RiCpuLine className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                            <div className="p-3 bg-muted rounded-lg w-fit mb-2">
+                                <RiCpuLine className="h-6 w-6 text-muted-foreground" />
                             </div>
                             <CardTitle>Analog Hardware</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-muted-foreground">
                                 Energy-efficient oscillator-based decoder with 5.47 pJ/bit consumption
                             </p>
                         </CardContent>
@@ -523,13 +522,13 @@ export default function LDPCTestingInterface() {
 
                     <Card className="card-elevated-hover">
                         <CardHeader>
-                            <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg w-fit mb-2">
-                                <RiFlashlightLine className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                            <div className="p-3 bg-muted rounded-lg w-fit mb-2">
+                                <RiFlashlightLine className="h-6 w-6 text-muted-foreground" />
                             </div>
                             <CardTitle>Digital Hardware</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-muted-foreground">
                                 Traditional belief propagation decoder for baseline comparison
                             </p>
                         </CardContent>
@@ -537,13 +536,13 @@ export default function LDPCTestingInterface() {
 
                     <Card className="card-elevated-hover">
                         <CardHeader>
-                            <div className="p-3 bg-green-100 dark:bg-green-900/30 rounded-lg w-fit mb-2">
-                                <BarChart3 className="h-6 w-6 text-green-600 dark:text-green-400" />
+                            <div className="p-3 bg-muted rounded-lg w-fit mb-2">
+                                <BarChart3 className="h-6 w-6 text-muted-foreground" />
                             </div>
                             <CardTitle>Real-time Analysis</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-muted-foreground">
                                 Monitor performance metrics and convergence in real-time
                             </p>
                         </CardContent>
@@ -552,4 +551,4 @@ export default function LDPCTestingInterface() {
             </div>
         </div>
     );
-} 
+}

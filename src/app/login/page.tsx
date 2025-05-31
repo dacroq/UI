@@ -12,6 +12,7 @@ import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 // Authentication
 import { auth, User } from "@/lib/auth";
+import Navigation from "@/components/ui/Navigation";
 
 // =============================================================================
 // |                                TYPES                                      |
@@ -170,20 +171,22 @@ export default function LoginPage() {
         {/* ─────────────────────────────────────────────────────────────────── */}
         {/* Navigation Header                                                     */}
         {/* ─────────────────────────────────────────────────────────────────── */}
-        <nav className="w-full h-16 flex items-center px-8 border-b border-border bg-card/50 backdrop-blur-xl justify-between">
-          <div className="flex items-center gap-2.5">
-            <div className="h-9 w-9 flex items-center justify-center">
-              <RiCpuLine className="h-6 w-6 text-foreground" />
-            </div>
-            <span className="font-semibold text-foreground text-[19px] tracking-[-0.01em]">
-            Dacroq
-          </span>
-          </div>
+        {/*<nav className="w-full h-16 flex items-center px-8 border-b border-border bg-card/50 backdrop-blur-xl justify-between">*/}
+        {/*  <div className="flex items-center gap-2.5">*/}
+        {/*    <div className="h-9 w-9 flex items-center justify-center">*/}
+        {/*      <RiCpuLine className="h-6 w-6 text-foreground" />*/}
+        {/*    </div>*/}
+        {/*    <span className="font-semibold text-foreground text-[19px] tracking-[-0.01em]">*/}
+        {/*    Dacroq*/}
+        {/*  </span>*/}
+        {/*  </div>*/}
 
-          <div className="flex items-center gap-3">
-            {state.isMounted && <ThemeToggle />}
-          </div>
-        </nav>
+        {/*  <div className="flex items-center gap-3">*/}
+        {/*    {state.isMounted && <ThemeToggle />}*/}
+        {/*  </div>*/}
+        {/*</nav>*/}
+
+        <Navigation />
 
         {/* ─────────────────────────────────────────────────────────────────── */}
         {/* Main Content Area                                                     */}
@@ -262,9 +265,10 @@ export default function LoginPage() {
                       onClick={handleGoogleSignIn}
                       disabled={state.isProcessing}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-transparent to-primary/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+
                     <div className="relative flex items-center justify-center h-14 px-6 rounded-xl border border-border bg-background hover:bg-accent/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
-                  <span className="inline-flex items-center gap-3 text-base font-medium text-foreground">
+
+                      <span className="inline-flex items-center gap-3 text-base font-medium text-foreground">
                     <RiGoogleFill className="h-5 w-5" />
                     {state.isProcessing ? "Signing in..." : "Sign in with Google"}
                   </span>

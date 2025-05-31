@@ -14,24 +14,24 @@ import { Slider } from "@/components/Slider";
 import { ChevronRight, Sparkles, BarChart3, Cpu } from 'lucide-react';
 
 const EXAMPLES = [
-  {
-    label: "Simple Satisfiable (3-SAT)",
-    value: "example1",
-    dimacs: `c Simple satisfiable example\np cnf 3 2\n1 -3 0\n2 3 -1 0`,
-    description: "Basic 3-variable, 2-clause satisfiable problem"
-  },
-  {
-    label: "Unsatisfiable (Contradiction)",
-    value: "example2",
-    dimacs: `c Unsatisfiable example\np cnf 1 2\n1 0\n-1 0`,
-    description: "Simple contradiction: x AND NOT x"
-  },
-  {
-    label: "Complex 3-SAT",
-    value: "example3",
-    dimacs: `c Complex 3-SAT problem\np cnf 5 7\n1 2 -3 0\n-1 3 4 0\n2 -4 5 0\n-2 -3 -5 0\n1 -4 -5 0\n3 4 5 0\n-1 -2 -3 0`,
-    description: "5 variables, 7 clauses with multiple solutions"
-  }
+    {
+        label: "Simple Satisfiable (3-SAT)",
+        value: "example1",
+        dimacs: `c Simple satisfiable example\np cnf 3 2\n1 -3 0\n2 3 -1 0`,
+        description: "Basic 3-variable, 2-clause satisfiable problem"
+    },
+    {
+        label: "Unsatisfiable (Contradiction)",
+        value: "example2",
+        dimacs: `c Unsatisfiable example\np cnf 1 2\n1 0\n-1 0`,
+        description: "Simple contradiction: x AND NOT x"
+    },
+    {
+        label: "Complex 3-SAT",
+        value: "example3",
+        dimacs: `c Complex 3-SAT problem\np cnf 5 7\n1 2 -3 0\n-1 3 4 0\n2 -4 5 0\n-2 -3 -5 0\n1 -4 -5 0\n3 4 5 0\n-1 -2 -3 0`,
+        description: "5 variables, 7 clauses with multiple solutions"
+    }
 ];
 
 // Parameter configuration for dynamic UI
@@ -83,18 +83,18 @@ export default function SATTestingInterface() {
     const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [initialLoading, setInitialLoading] = useState(true);
-    
+
     // Test configuration state
     const [testName, setTestName] = useState('');
     const [dimacsInput, setDimacsInput] = useState('');
     const [selectedExample, setSelectedExample] = useState('');
-    
+
     // Dynamic parameters state
     const [activeParameters, setActiveParameters] = useState<Record<string, any>>({
         solver_type: PARAMETER_OPTIONS.solver_type.default,
         timeout: PARAMETER_OPTIONS.timeout.default
     });
-    
+
     const [showParameterSelector, setShowParameterSelector] = useState(false);
 
     // Auto-generate test name
@@ -102,7 +102,7 @@ export default function SATTestingInterface() {
         if (typeof window === 'undefined') {
             return 'sat_' + Date.now().toString(36).slice(-6);
         }
-        
+
         try {
             const user = JSON.parse(localStorage.getItem("user") || "{}");
             const email = user.email || "user@example.com";
@@ -155,7 +155,7 @@ export default function SATTestingInterface() {
         try {
             setLoading(true);
             const finalTestName = testName.trim() || generateTestName();
-            
+
             const response = await fetch('/api/proxy/sat/solve', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -167,18 +167,18 @@ export default function SATTestingInterface() {
             });
 
             const result = await response.json();
-            
+
             if (response.ok) {
                 toast({
                     variant: 'success',
                     description: `Test "${finalTestName}" started successfully!`
                 });
-                
+
                 // Reset form
                 setTestName('');
                 setDimacsInput('');
                 setSelectedExample('');
-                
+
                 // Redirect to dashboard
                 setTimeout(() => {
                     router.push('/dashboard');
@@ -202,7 +202,7 @@ export default function SATTestingInterface() {
 
     const renderParameterControl = (paramKey: string, config: any) => {
         const value = activeParameters[paramKey];
-        
+
         switch (config.type) {
             case 'select':
                 return (
@@ -216,7 +216,7 @@ export default function SATTestingInterface() {
                                     <div className="flex flex-col items-start">
                                         <span className="font-medium">{option.label}</span>
                                         {option.description && (
-                                            <span className="text-xs text-gray-500 dark:text-gray-400">{option.description}</span>
+                                            <span className="text-xs text-muted-foreground">{option.description}</span>
                                         )}
                                     </div>
                                 </SelectItem>
@@ -224,12 +224,12 @@ export default function SATTestingInterface() {
                         </SelectContent>
                     </Select>
                 );
-            
+
             case 'slider':
                 return (
                     <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                            <span className="text-sm text-gray-600 dark:text-gray-400">{value}{config.unit}</span>
+                            <span className="text-sm text-muted-foreground">{value}{config.unit}</span>
                         </div>
                         <Slider
                             value={[value]}
@@ -241,7 +241,7 @@ export default function SATTestingInterface() {
                         />
                     </div>
                 );
-            
+
             case 'number':
                 return (
                     <Input
@@ -253,7 +253,7 @@ export default function SATTestingInterface() {
                         className="w-full"
                     />
                 );
-            
+
             default:
                 return null;
         }
@@ -263,8 +263,8 @@ export default function SATTestingInterface() {
         return (
             <div className="flex items-center justify-center min-h-[60vh]">
                 <div className="flex items-center space-x-2">
-                    <RiLoader4Line className="h-6 w-6 animate-spin text-blue-600 dark:text-blue-400" />
-                    <span className="text-lg text-gray-600 dark:text-gray-400">Loading interface...</span>
+                    <RiLoader4Line className="h-6 w-6 animate-spin text-muted-foreground" />
+                    <span className="text-lg text-muted-foreground">Loading interface...</span>
                 </div>
             </div>
         );
@@ -272,23 +272,23 @@ export default function SATTestingInterface() {
 
     return (
         <div className="page-container">
-            <div className="max-w-4xl mx-auto space-y-8">
+            <div className="max-w-4xl mx-auto space-y-8 py-8 px-4">
                 {/* Header */}
                 <div className="text-center page-header">
-                    <div className="inline-flex items-center justify-center p-3 bg-green-100 dark:bg-green-900/30 rounded-2xl mb-6">
-                        <Sparkles className="h-8 w-8 text-green-600 dark:text-green-400" />
+                    <div className="inline-flex items-center justify-center p-3 bg-muted rounded-2xl mb-6">
+                        <Sparkles className="h-8 w-8 text-muted-foreground" />
                     </div>
-                    <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+                    <h1 className="text-4xl font-bold text-foreground mb-4">
                         SAT Solver
                     </h1>
-                    <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                         Solve Boolean satisfiability problems using cutting-edge algorithms and hardware acceleration
                     </p>
                 </div>
 
                 {/* Main Configuration Card */}
                 <Card className="card-elevated">
-                    <CardHeader className="border-b border-gray-200 dark:border-gray-700">
+                    <CardHeader className="border-b border-border">
                         <CardTitle className="text-xl flex items-center gap-2">
                             <RiSettings3Line className="h-5 w-5" />
                             SAT Problem Configuration
@@ -333,7 +333,7 @@ export default function SATTestingInterface() {
                                         exit={{ opacity: 0, height: 0 }}
                                         className="overflow-hidden mb-4"
                                     >
-                                        <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4">
+                                        <div className="border-2 border-dashed border-border rounded-lg p-4">
                                             <div className="grid grid-cols-2 gap-2">
                                                 {Object.entries(PARAMETER_OPTIONS).map(([key, config]) => (
                                                     !activeParameters[key] && (
@@ -366,17 +366,17 @@ export default function SATTestingInterface() {
                                             key={key}
                                             initial={{ opacity: 0, x: -20 }}
                                             animate={{ opacity: 1, x: 0 }}
-                                            className="bg-gray-50 dark:bg-gray-800/50 rounded-lg p-4 space-y-3"
+                                            className="bg-muted/50 rounded-lg p-4 space-y-3"
                                         >
                                             <div className="flex items-center justify-between">
                                                 <div className="flex items-center gap-3">
-                                                    <div className="p-2 bg-white dark:bg-gray-700 rounded-lg">
+                                                    <div className="p-2 bg-background rounded-lg">
                                                         {config.icon}
                                                     </div>
                                                     <div>
-                                                        <h4 className="font-medium text-gray-900 dark:text-white">{config.label}</h4>
+                                                        <h4 className="font-medium text-foreground">{config.label}</h4>
                                                         {'description' in config && config.description && (
-                                                            <p className="text-xs text-gray-500 dark:text-gray-400">{config.description}</p>
+                                                            <p className="text-xs text-muted-foreground">{config.description}</p>
                                                         )}
                                                     </div>
                                                 </div>
@@ -420,12 +420,7 @@ export default function SATTestingInterface() {
                                 value={dimacsInput}
                                 onChange={(e) => setDimacsInput(e.target.value)}
                                 placeholder="c Example SAT problem&#10;p cnf 3 2&#10;1 -3 0&#10;2 3 -1 0"
-                                className="w-full h-32 p-3 text-sm font-mono bg-gray-900 dark:bg-gray-950 text-green-400 border border-gray-600 dark:border-gray-700 rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                style={{ 
-                                    backgroundColor: '#1a1a1a',
-                                    color: '#4ade80',
-                                    border: '1px solid #374151'
-                                }}
+                                className="w-full h-32 p-3 text-sm font-mono bg-foreground/5 text-foreground border border-border rounded-lg resize-none focus:ring-2 focus:ring-ring focus:border-transparent"
                             />
                             <p className="form-description">
                                 Enter your SAT problem in DIMACS CNF format. Each clause should end with 0.
@@ -438,7 +433,7 @@ export default function SATTestingInterface() {
                                 size="lg"
                                 onClick={runTest}
                                 disabled={loading || !dimacsInput.trim()}
-                                className="btn-apple-primary gap-2 px-8 h-12"
+                                className="gap-2 px-8 h-12"
                             >
                                 {loading ? (
                                     <>
@@ -461,13 +456,13 @@ export default function SATTestingInterface() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <Card className="card-elevated-hover">
                         <CardHeader>
-                            <div className="p-3 bg-green-100 dark:bg-green-900/30 rounded-lg w-fit mb-2">
-                                <RiCodeSSlashLine className="h-6 w-6 text-green-600 dark:text-green-400" />
+                            <div className="p-3 bg-muted rounded-lg w-fit mb-2">
+                                <RiCodeSSlashLine className="h-6 w-6 text-muted-foreground" />
                             </div>
                             <CardTitle>Software Solver</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-muted-foreground">
                                 State-of-the-art CDCL algorithm with advanced heuristics
                             </p>
                         </CardContent>
@@ -475,13 +470,13 @@ export default function SATTestingInterface() {
 
                     <Card className="card-elevated-hover">
                         <CardHeader>
-                            <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg w-fit mb-2">
-                                <Cpu className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                            <div className="p-3 bg-muted rounded-lg w-fit mb-2">
+                                <Cpu className="h-6 w-6 text-muted-foreground" />
                             </div>
                             <CardTitle>Hardware Acceleration</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-muted-foreground">
                                 FPGA-accelerated solving for complex problems (coming soon)
                             </p>
                         </CardContent>
@@ -489,13 +484,13 @@ export default function SATTestingInterface() {
 
                     <Card className="card-elevated-hover">
                         <CardHeader>
-                            <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg w-fit mb-2">
-                                <BarChart3 className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                            <div className="p-3 bg-muted rounded-lg w-fit mb-2">
+                                <BarChart3 className="h-6 w-6 text-muted-foreground" />
                             </div>
                             <CardTitle>Performance Analysis</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className="text-sm text-muted-foreground">
                                 Track solving time, conflicts, and solution quality
                             </p>
                         </CardContent>
@@ -504,4 +499,4 @@ export default function SATTestingInterface() {
             </div>
         </div>
     );
-} 
+}

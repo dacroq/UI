@@ -80,7 +80,13 @@ export default function Navigation() {
                 ? "bg-background/80 backdrop-blur-md shadow-sm border-border"
                 : "bg-card border-border"
         }`}>
-          <nav className="max-w-7xl mx-auto h-full flex items-center justify-between px-6">
+          {/* Subtle gradient overlay for depth */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-foreground/10 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-t from-foreground/5 to-transparent" />
+          </div>
+
+          <nav className="relative max-w-7xl mx-auto h-full flex items-center justify-between px-6">
             <div className="flex items-center h-full">
               {/* Brand with icon */}
               <Link href="/dashboard" className="flex items-center mr-8 h-[27px]">
@@ -90,38 +96,42 @@ export default function Navigation() {
 
               {/* Main Navigation - Desktop */}
               <div className="hidden md:flex items-center gap-6 h-full">
-                <Link
-                    href={navLinks.dashboard}
-                    className={`inline-flex items-center h-[27px] px-3 text-sm font-medium rounded-md transition-colors ${
-                        pathname === navLinks.dashboard || pathname.includes('/dashboard')
-                            ? 'text-foreground bg-accent'
-                            : 'text-muted-foreground hover:text-foreground hover:bg-accent'
-                    }`}
-                >
-                  Dashboard
-                </Link>
+                {userData && (
+                  <>
+                    <Link
+                        href={navLinks.dashboard}
+                        className={`inline-flex items-center h-[27px] px-3 text-sm font-medium rounded-md transition-colors ${
+                            pathname === navLinks.dashboard || pathname.includes('/dashboard')
+                                ? 'text-foreground bg-accent'
+                                : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                        }`}
+                    >
+                      Dashboard
+                    </Link>
 
-                <Link
-                    href={navLinks.ldpc}
-                    className={`inline-flex items-center h-[27px] px-3 text-sm font-medium rounded-md transition-colors ${
-                        pathname === navLinks.ldpc || pathname.includes('/ldpc')
-                            ? 'text-foreground bg-accent'
-                            : 'text-muted-foreground hover:text-foreground hover:bg-accent'
-                    }`}
-                >
-                  LDPC Encoder/Decoder Core
-                </Link>
+                    <Link
+                        href={navLinks.ldpc}
+                        className={`inline-flex items-center h-[27px] px-3 text-sm font-medium rounded-md transition-colors ${
+                            pathname === navLinks.ldpc || pathname.includes('/ldpc')
+                                ? 'text-foreground bg-accent'
+                                : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                        }`}
+                    >
+                      LDPC Encoder/Decoder Core
+                    </Link>
 
-                <Link
-                    href={navLinks.sat}
-                    className={`inline-flex items-center h-[27px] px-3 text-sm font-medium rounded-md transition-colors ${
-                        pathname === navLinks.sat || pathname.includes('/sat')
-                            ? 'text-foreground bg-accent'
-                            : 'text-muted-foreground hover:text-foreground hover:bg-accent'
-                    }`}
-                >
-                  SAT Solver Core
-                </Link>
+                    <Link
+                        href={navLinks.sat}
+                        className={`inline-flex items-center h-[27px] px-3 text-sm font-medium rounded-md transition-colors ${
+                            pathname === navLinks.sat || pathname.includes('/sat')
+                                ? 'text-foreground bg-accent'
+                                : 'text-muted-foreground hover:text-foreground hover:bg-accent'
+                        }`}
+                    >
+                      SAT Solver Core
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
 
@@ -233,52 +243,56 @@ export default function Navigation() {
 
                 {/* Mobile Nav Links */}
                 <nav className="space-y-2 flex-1">
-                  <Link
-                      href={navLinks.dashboard}
-                      className={`block px-3 py-2 text-base font-medium rounded-md ${
-                          pathname === navLinks.dashboard || pathname.includes('/dashboard')
-                              ? 'text-foreground bg-accent'
-                              : 'text-foreground hover:bg-accent'
-                      }`}
-                      onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Dashboard
-                  </Link>
+                  {userData && (
+                    <>
+                      <Link
+                          href={navLinks.dashboard}
+                          className={`block px-3 py-2 text-base font-medium rounded-md ${
+                              pathname === navLinks.dashboard || pathname.includes('/dashboard')
+                                  ? 'text-foreground bg-accent'
+                                  : 'text-foreground hover:bg-accent'
+                          }`}
+                          onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Dashboard
+                      </Link>
 
-                  <Link
-                      href={navLinks.ldpc}
-                      className={`block px-3 py-2 text-base font-medium rounded-md ${
-                          pathname === navLinks.ldpc || pathname.includes('/ldpc')
-                              ? 'text-foreground bg-accent'
-                              : 'text-foreground hover:bg-accent'
-                      }`}
-                      onClick={() => setMobileMenuOpen(false)}
-                  >
-                    LDPC Encoder/Decoder Core
-                  </Link>
+                      <Link
+                          href={navLinks.ldpc}
+                          className={`block px-3 py-2 text-base font-medium rounded-md ${
+                              pathname === navLinks.ldpc || pathname.includes('/ldpc')
+                                  ? 'text-foreground bg-accent'
+                                  : 'text-foreground hover:bg-accent'
+                          }`}
+                          onClick={() => setMobileMenuOpen(false)}
+                      >
+                        LDPC Encoder/Decoder Core
+                      </Link>
 
-                  <Link
-                      href={navLinks.sat}
-                      className={`block px-3 py-2 text-base font-medium rounded-md ${
-                          pathname === navLinks.sat || pathname.includes('/sat')
-                              ? 'text-foreground bg-accent'
-                              : 'text-foreground hover:bg-accent'
-                      }`}
-                      onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Boolean Satisfiability (3SAT/KSAT)
-                  </Link>
+                      <Link
+                          href={navLinks.sat}
+                          className={`block px-3 py-2 text-base font-medium rounded-md ${
+                              pathname === navLinks.sat || pathname.includes('/sat')
+                                  ? 'text-foreground bg-accent'
+                                  : 'text-foreground hover:bg-accent'
+                          }`}
+                          onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Boolean Satisfiability (3SAT/KSAT)
+                      </Link>
 
-                  {/* Secondary Links */}
-                  <div className="pt-4 mt-4 border-t border-border">
-                    <Link
-                        href={navLinks.settings}
-                        className="block px-3 py-2 text-base font-medium text-foreground hover:bg-accent rounded-md"
-                        onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Settings
-                    </Link>
-                  </div>
+                      {/* Secondary Links */}
+                      <div className="pt-4 mt-4 border-t border-border">
+                        <Link
+                            href={navLinks.settings}
+                            className="block px-3 py-2 text-base font-medium text-foreground hover:bg-accent rounded-md"
+                            onClick={() => setMobileMenuOpen(false)}
+                        >
+                          Settings
+                        </Link>
+                      </div>
+                    </>
+                  )}
                 </nav>
 
                 {/* Sign Out - Mobile */}
